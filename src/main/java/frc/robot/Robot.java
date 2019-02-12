@@ -136,11 +136,11 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
     
-    if(testLoop++ > 100){
-    CameraServer.getInstance().startAutomaticCapture();
-    testLoop = 0;
+  //  if(testLoop++ > 100){
+    //CameraServer.getInstance().startAutomaticCapture();
+  //  testLoop = 0;
   }
-  }
+  
 
   /**
    * This function is called periodically during test mode.

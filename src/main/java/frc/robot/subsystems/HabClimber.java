@@ -42,24 +42,21 @@ public class HabClimber extends Subsystem {
   }
 
   public void controlClimber(){
-    if(OI.operator.getRawButton(9) == true && OI.operator.getRawButton(10) == true){
+    if(OI.operator.getRawButton(10) == true){
       isArmed = true;
+      System.out.println(isArmed);
     }
 
-    if(OI.driveController.getRawButton(4) == true && isArmed == true && frontDown == false){
+    if(OI.driveController.getRawButton(4) == true){
       frontClimberSolenoid.set(true);
-      frontDown = true;
-    }else if(OI.driveController.getRawButton(4) == true && isArmed == true && frontDown == true){
+    }else if(OI.driveController.getRawButton(2) == true){
       frontClimberSolenoid.set(false);
-      frontDown = false;
     }
 
-    if(OI.driveController.getRawButton(2) == true && isArmed == true && backDown == false){
+    if(OI.driveController.getRawButton(3) == true){
       backClimberSolenoid.set(true);
-      backDown = true;
-    }else if(OI.driveController.getRawButton(2) == true && isArmed == true && backDown == true){
+    }else if(OI.driveController.getRawButton(1) == true){
       backClimberSolenoid.set(false);
-      backDown = false;
     }
   }
 }

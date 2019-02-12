@@ -55,6 +55,8 @@ public static int liftState;
     bottomLiftSwitch = RobotMap.bottomLiftSwitch;
 
     liftMotor2.follow(liftMotor1);
+    liftMotor2.setInverted(false);
+    liftMotor1.setInverted(true);
 
     isDown = true;
     isMid = false;
@@ -97,7 +99,7 @@ public void setTargetState(){
   }
 }
 
-  public void controlLift(){
+  public void basicLiftControl(){
      if(OI.operator.getRawButton(4) == true){
        liftMotor1.set(1.0);
      }else if(OI.operator.getRawButton(2) == true){
@@ -105,22 +107,24 @@ public void setTargetState(){
      }else{
        liftMotor1.set(0.0);
      }
+  }
 
-    //  if(targetState > liftState){
-      //  liftMotor1.set(1.0);
-    //  }else if(targetState < liftState){
-      //  liftMotor1.set(-1.0);
-    //  }else if(targetState == liftState){
-      //  liftMotor1.set(0.0);
-    //  }else if(targetState == 3 && liftState == 3 && isTop == false){
-      //  liftMotor1.set(1.0);
-    //  }else if(targetState == 2 && liftState == 2 && isMid == false && liftMotor1.get() > 0){
-      //  liftMotor1.set(-1.0);
-    //  }else if(targetState == 2 && liftState == 2 && isMid == false && liftMotor1.get() < 0){
-      //  liftMotor1.set(1.0);
-    //  }else  if(targetState == 1 && liftState == 1 && isDown == false){
-      //  liftMotor1.set(-1.0);
-    //  }
+  public void advancedLiftControl(){
+    if(targetState > liftState){
+      liftMotor1.set(1.0);
+    }else if(targetState < liftState){
+      liftMotor1.set(-1.0);
+    }else if(targetState == liftState){
+      liftMotor1.set(0.0);
+    }else if(targetState == 3 && liftState == 3 && isTop == false){
+      liftMotor1.set(1.0);
+    }else if(targetState == 2 && liftState == 2 && isMid == false && liftMotor1.get() > 0){
+      liftMotor1.set(-1.0);
+    }else if(targetState == 2 && liftState == 2 && isMid == false && liftMotor1.get() < 0){
+      liftMotor1.set(1.0);
+    }else  if(targetState == 1 && liftState == 1 && isDown == false){
+      liftMotor1.set(-1.0);
+    }
   }
 
   @Override

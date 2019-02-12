@@ -52,18 +52,18 @@ public class HatchGripper extends Subsystem {
     }
 
     if(hasHatch == false && isOpen == true){
-      if(OI.operator.getRawButton(5) == true || (gripperSwitch1State == false && gripperSwitch2State == false)){
+      if(OI.operator.getRawButton(6) == true || (gripperSwitch1State == false && gripperSwitch2State == false)){
         gripperSolenoid.set(false);
         isOpen = false;
       }
 
     }else if(hasHatch == true && isOpen == false){
-      if(OI.operator.getRawButton(6) == true){
+      if(OI.operator.getRawButton(5) == true){
         gripperSolenoid.set(true);
         isOpen = true;
       }
     }else if(hasHatch == false && isOpen == false){
-     if(OI.operator.getRawButton(6) == true){
+     if(OI.operator.getRawButton(5) == true){
        gripperSolenoid.set(true);
         isOpen = true;
       }

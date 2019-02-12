@@ -61,10 +61,10 @@ public class RobotMap {
 
     //Hab Climber Solenoids
   public static Solenoid frontClimberSolenoid = new Solenoid(7,1);
-  public static Solenoid backClimberSolenoid = new Solenoid(7,2);
+  public static Solenoid backClimberSolenoid = new Solenoid(7,3);
 
     //Cargo Delivery Solenoids
-  public static Solenoid deliveryArmSolenoid = new Solenoid(7,3);
+  public static Solenoid deliveryArmSolenoid = new Solenoid(7,2);
 //////////////////////////////////////////////////////////////////////////////////////////////      
 
 }

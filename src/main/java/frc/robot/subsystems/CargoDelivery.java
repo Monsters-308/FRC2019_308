@@ -35,6 +35,7 @@ public class CargoDelivery extends Subsystem {
   public void setupCargoDelivery(){
     deliveryArmSolenoid = RobotMap.deliveryArmSolenoid;
     isRaised = true;
+    deliveryArmSolenoid.set(false);
   }
 
   public void controlCargoDelivery(){

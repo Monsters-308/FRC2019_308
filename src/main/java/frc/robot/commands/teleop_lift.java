@@ -26,7 +26,8 @@ public class teleop_lift extends Command {
   @Override
   protected void execute() {
     Robot.lift.getLiftStates();
-    Robot.lift.controlLift();
+    Robot.lift.setTargetState();
+    Robot.lift.basicLiftControl();
   }
 
   // Make this return true when this Command no longer needs to run execute()
