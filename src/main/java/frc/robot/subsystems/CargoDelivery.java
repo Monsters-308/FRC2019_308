@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.Solenoid;
@@ -36,23 +37,24 @@ public class CargoDelivery extends Subsystem {
     deliveryArmSolenoid = RobotMap.deliveryArmSolenoid;
     isRaised = true;
     deliveryArmSolenoid.set(false);
+    cargoIntakeMotor.setNeutralMode(NeutralMode.Brake);
   }
 
-  public void controlCargoDelivery(){
-    if(isRaised == true && OI.operator.getRawButton(3) == true){
-      deliveryArmSolenoid.set(true);
-      isRaised = false;
-    }else if(isRaised == false && OI.operator.getRawButton(3) == true){
+  public void controlCargoDelivery() {
+    if(OI.operator.getRawButton(3) == true){
       deliveryArmSolenoid.set(false);
-      isRaised = true;
-    }
-
-    if(OI.operator.getRawButton(7) == true){
+      isRaised = false;
       cargoIntakeMotor.set(1.0);
-    }else if(OI.operator.getRawButton(8) == true){
-      cargoIntakeMotor.set(-1.0);
     }else{
-      cargoIntakeMotor.set(0.0);
+      deliveryArmSolenoid.set(true);
+      if(OI.operator.getRawButton(8) == true){
+        cargoIntakeMotor.set(-1.0);
+      }else if(OI.operator.getRawButton(7) == true){
+        cargoIntakeMotor.set(1.0);
+      }else{
+        cargoIntakeMotor.set(0.0);
+        isRaised = true;
+      }
     }
   }
 }

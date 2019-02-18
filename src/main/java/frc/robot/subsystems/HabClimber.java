@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.OI;
+import frc.robot.subsystems.*;
 import frc.robot.RobotMap;
 import frc.robot.commands.teleop_habclimber;
 
@@ -44,18 +45,19 @@ public class HabClimber extends Subsystem {
   public void controlClimber(){
     if(OI.operator.getRawButton(10) == true){
       isArmed = true;
-      System.out.println(isArmed);
+      Chassis.driveCoef = 0.75;
+      Chassis.turnCoef = 0.75;
     }
 
-    if(OI.driveController.getRawButton(4) == true){
+    if(OI.driveController.getRawButton(2) == true && isArmed == true){
       frontClimberSolenoid.set(true);
-    }else if(OI.driveController.getRawButton(2) == true){
+    }else{
       frontClimberSolenoid.set(false);
     }
 
-    if(OI.driveController.getRawButton(3) == true){
+    if(OI.driveController.getRawButton(4) == true && isArmed == true){
       backClimberSolenoid.set(true);
-    }else if(OI.driveController.getRawButton(1) == true){
+    }else{
       backClimberSolenoid.set(false);
     }
   }

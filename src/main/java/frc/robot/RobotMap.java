@@ -41,7 +41,7 @@ public class RobotMap {
   //Sensors:
   
     //Chassis Sensors
-  public static ADXRS450_Gyro gyro = new ADXRS450_Gyro();
+  //public static ADXRS450_Gyro gyro = new ADXRS450_Gyro();
 
     //Gripper Sensors
   public static DigitalInput gripperSwitch1 = new DigitalInput(0);
@@ -49,22 +49,22 @@ public class RobotMap {
 
     //Lift Sensors
   public static DigitalInput bottomLiftSwitch = new DigitalInput(2);
-  public static DigitalInput middleLiftSwitch = new DigitalInput(3);
-  public static DigitalInput topLiftSwitch = new DigitalInput(4);
+  public static DigitalInput topLiftSwitch = new DigitalInput(3);
+  public static DigitalInput middleLiftSwitch = new DigitalInput(4);
 //////////////////////////////////////////////////////////////////////////////////////////////
 
   //Pnuematics:
   public static Compressor compressor = new Compressor(7);
 
     //Gripper Solenoids
-  public static Solenoid gripperSolenoid = new Solenoid(7,0); 
+  public static Solenoid gripperSolenoid = new Solenoid(7,2); 
 
     //Hab Climber Solenoids
   public static Solenoid frontClimberSolenoid = new Solenoid(7,1);
   public static Solenoid backClimberSolenoid = new Solenoid(7,3);
 
     //Cargo Delivery Solenoids
-  public static Solenoid deliveryArmSolenoid = new Solenoid(7,2);
+  public static Solenoid deliveryArmSolenoid = new Solenoid(7,0);
 //////////////////////////////////////////////////////////////////////////////////////////////      
 
 }

@@ -68,7 +68,6 @@ public class HatchGripper extends Subsystem {
         isOpen = true;
       }
     }
-    System.out.println("hasHatch: " + hasHatch);
   }
 
 

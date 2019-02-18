@@ -51,9 +51,12 @@ public class Robot extends TimedRobot {
     cargodelivery = new CargoDelivery();
     habclimber = new HabClimber();
 
+    CameraServer.getInstance().startAutomaticCapture(0);
+    CameraServer.getInstance().startAutomaticCapture(1);
+
     m_chooser.addDefault("Default Auto", new filler_auto());
     // chooser.addObject("My Auto", new MyAutoCommand());
-    SmartDashboard.putData("Auto mode", m_chooser);
+    //SmartDashboard.putData("Auto mode", m_chooser);
   }
 
   /**
@@ -135,10 +138,16 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-    
-  //  if(testLoop++ > 100){
-    //CameraServer.getInstance().startAutomaticCapture();
-  //  testLoop = 0;
+
+    if(testLoop++ > 10){
+      SmartDashboard.putBoolean("Down: ", Lift.isDown);
+      SmartDashboard.putBoolean("Middle: ", Lift.isMid);
+      SmartDashboard.putBoolean("Top: ", Lift.isTop);
+      SmartDashboard.putBoolean("Delivery: ", CargoDelivery.isRaised);
+      SmartDashboard.putBoolean("Hatch Status: ", HatchGripper.hasHatch);
+      
+    testLoop = 0;
+    }
   }
   
 

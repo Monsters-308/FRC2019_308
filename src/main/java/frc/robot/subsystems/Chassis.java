@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -32,6 +33,8 @@ public class Chassis extends PIDSubsystem {
   public static double forward;
   public static double reverse;
   public static double turn;
+  public static double turnCoef;
+  public static double driveCoef;
 
   /**
    * Add your docs here.
@@ -57,13 +60,23 @@ public class Chassis extends PIDSubsystem {
     leftBack.setInverted(false);
     rightBack.setInverted(false);
 
-  }
-  
+    leftFront.setNeutralMode(NeutralMode.Brake);
+    rightFront.setNeutralMode(NeutralMode.Brake);
+    leftBack.setNeutralMode(NeutralMode.Brake);
+    rightBack.setNeutralMode(NeutralMode.Brake);
 
-  public void drive(){
-    forward = OI.driveController.getRawAxis(2);
-    reverse = -OI.driveController.getRawAxis(3);
-    turn = OI.driveController.getRawAxis(0);
+    turnCoef = 0.9;
+    driveCoef = 0.85;
+
+  }
+  public void basicDrive(){
+    
+  }
+
+  public void advancedDrive(){
+    forward = driveCoef*OI.driveController.getRawAxis(2);
+    reverse = -driveCoef*OI.driveController.getRawAxis(3);
+    turn = turnCoef*OI.driveController.getRawAxis(0);
 
     double x = 0;
 
@@ -83,8 +96,6 @@ public class Chassis extends PIDSubsystem {
         x = 0;
       }
 
-
-    //}
     mainDrive.arcadeDrive(x, turn);
   }
 

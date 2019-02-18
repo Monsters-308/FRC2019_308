@@ -7,33 +7,41 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.time.StopWatch;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.teleop_lift;
 import frc.robot.OI;
+
 
 /**
  * Add your docs here.
  */
 public class Lift extends PIDSubsystem {
-  
-  //import motor objects from RobotMap
-public static WPI_TalonSRX liftMotor1 = RobotMap.liftMotor1;
-public static WPI_TalonSRX liftMotor2 = RobotMap.liftMotor2;
 
-  //create local limit switch objects
-public static DigitalInput bottomLiftSwitch;
-public static DigitalInput middleLiftSwitch;
-public static DigitalInput topLiftSwitch;  
-public static boolean isDown;
-public static boolean isMid;
-public static boolean isTop;
-public static int targetState;
-public static int liftState;
-  
+  public static StopWatch stopwatch = new StopWatch();
+
+  // import motor objects from RobotMap
+  public static WPI_TalonSRX liftMotor1 = RobotMap.liftMotor1;
+  public static WPI_TalonSRX liftMotor2 = RobotMap.liftMotor2;
+
+  // create local limit switch objects
+  public static DigitalInput bottomLiftSwitch;
+  public static DigitalInput middleLiftSwitch;
+  public static DigitalInput topLiftSwitch;
+  public static boolean isDown;
+  public static boolean isMid;
+  public static boolean isTop;
+  public static boolean jogRunning;
+  public static int targetState;
+  public static int liftState;
+
   public Lift() {
     // Intert a subsystem name and PID values here
     super("SubsystemName", 1, 2, 3);
@@ -49,7 +57,7 @@ public static int liftState;
     setDefaultCommand(new teleop_lift());
   }
 
-  public void setupLift(){
+  public void setupLift() {
     topLiftSwitch = RobotMap.topLiftSwitch;
     middleLiftSwitch = RobotMap.middleLiftSwitch;
     bottomLiftSwitch = RobotMap.bottomLiftSwitch;
@@ -57,8 +65,10 @@ public static int liftState;
     liftMotor2.follow(liftMotor1);
     liftMotor2.setInverted(false);
     liftMotor1.setInverted(true);
+    liftMotor1.setNeutralMode(NeutralMode.Brake);
+    liftMotor2.setNeutralMode(NeutralMode.Brake);
 
-    isDown = true;
+    isDown = false;
     isMid = false;
     isTop = false;
 
@@ -66,64 +76,101 @@ public static int liftState;
     liftState = 0;
   }
 
-public void getLiftStates(){
-  if(bottomLiftSwitch.get() == false){
-    isDown = true;
-    liftState = 0;
-  }else{
-    isDown = false;
+  public void getLiftStates() {
+    //System.out.println(liftState);
+
+    if (bottomLiftSwitch.get() == false) {
+      isDown = true;
+      liftState = 0;
+    } else {
+      isDown = false;
+    }
+
+    if (middleLiftSwitch.get() == false) {
+      isMid = true;
+      liftState = 1;
+    } else {
+      isMid = false;
+    }
+
+    if (topLiftSwitch.get() == false) {
+      isTop = true;
+      liftState = 2;
+    } else {
+      isTop = false;
+    }
   }
 
-if(bottomLiftSwitch.get() == false){
-  isMid = true;
-  liftState = 1;
-}else{
-  isMid = false;
-}
-
-  if(topLiftSwitch.get() == false){
-    isTop = true;
-    liftState = 2;
-  }else{
-    isTop = false;
-  }
-}
-
-public void setTargetState(){
-  if(OI.operator.getRawButton(4) == true){
-    targetState = 2;
-  }else if(OI.operator.getRawButton(3) == true){
-    targetState = 1;
-  }else if(OI.operator.getRawButton(1) == true){
-    targetState = 0;
-  }
-}
-
-  public void basicLiftControl(){
-     if(OI.operator.getRawButton(4) == true){
-       liftMotor1.set(1.0);
-     }else if(OI.operator.getRawButton(2) == true){
-      liftMotor1.set(-1.0);
-     }else{
-       liftMotor1.set(0.0);
-     }
+  public void setTargetState() {
+    //System.out.println(targetState);
+    if (OI.operator.getRawButton(4) == true) {
+      targetState = 2;
+    } else if (OI.operator.getRawButton(1) == true) {
+      targetState = 1;
+    } else if (OI.operator.getRawButton(2) == true) {
+      targetState = 0;
+    }
   }
 
-  public void advancedLiftControl(){
-    if(targetState > liftState){
+  public void correctLevel(){
+    if(liftState == targetState){
+      if(targetState == 1 && isMid == false){
+        liftMotor1.set(0.5);
+      }else if(targetState == 2 && isTop == false){
+        liftMotor1.set(0.5);
+      }
+    }
+  }
+
+  public void basicLiftControl() {
+    if (OI.operator.getRawButton(4) == true) {
       liftMotor1.set(1.0);
-    }else if(targetState < liftState){
+    } else if (OI.operator.getRawButton(2) == true) {
       liftMotor1.set(-1.0);
-    }else if(targetState == liftState){
+    } else {
       liftMotor1.set(0.0);
-    }else if(targetState == 3 && liftState == 3 && isTop == false){
+    }
+
+    //System.out.println(topLiftSwitch.get());
+    //System.out.println(middleLiftSwitch.get());
+    //System.out.println(bottomLiftSwitch.get());
+  }
+
+  public void advancedLiftControl() {
+    if (targetState > liftState) {
       liftMotor1.set(1.0);
-    }else if(targetState == 2 && liftState == 2 && isMid == false && liftMotor1.get() > 0){
+    } else if (targetState < liftState) {
       liftMotor1.set(-1.0);
-    }else if(targetState == 2 && liftState == 2 && isMid == false && liftMotor1.get() < 0){
-      liftMotor1.set(1.0);
-    }else  if(targetState == 1 && liftState == 1 && isDown == false){
-      liftMotor1.set(-1.0);
+    } else if (targetState == liftState) {
+      liftMotor1.set(0.0);
+    }  
+  }
+
+  public static void runJog(long time, boolean dir) throws InterruptedException {
+		boolean jogRunning = true;
+		System.out.println(jogRunning);
+    stopwatch.start();
+    System.out.println("start");
+
+    if(dir){
+      liftMotor1.set(0.5);
+      System.out.println("jogging up");
+    }else{
+      liftMotor1.set(-0.5);
+      System.out.println("jogging down");
+    }
+		
+		if(stopwatch.getDurationMs() >= time) {
+      jogRunning = false;
+      liftMotor1.set(0.0);
+		}
+	}
+
+  public void jog() throws InterruptedException {
+    if(OI.driveController.getRawButton(3) == true){
+      runJog(5000, true);
+    }else if(OI.driveController.getRawButton(1) == true){
+      runJog(5000, false);
     }
   }
 
