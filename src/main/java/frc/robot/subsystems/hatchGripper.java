@@ -14,6 +14,8 @@ import frc.robot.OI;
 import frc.robot.RobotMap;
 import frc.robot.commands.teleop_gripper;
 
+import frc.robot.Robot;
+
 /**
  * Add your docs here.
  */
@@ -55,18 +57,27 @@ public class HatchGripper extends Subsystem {
       if(OI.operator.getRawButton(6) == true || (gripperSwitch1State == false && gripperSwitch2State == false)){
         gripperSolenoid.set(false);
         isOpen = false;
+        Lights.setState(0);
       }
 
     }else if(hasHatch == true && isOpen == false){
       if(OI.operator.getRawButton(5) == true){
         gripperSolenoid.set(true);
         isOpen = true;
+        Lights.setState(2);
       }
     }else if(hasHatch == false && isOpen == false){
      if(OI.operator.getRawButton(5) == true){
        gripperSolenoid.set(true);
         isOpen = true;
+        Lights.setState(1);
       }
+    }
+
+    if(hasHatch == true){
+      Lights.setState(0);
+    }else if(hasHatch == false){
+      Lights.setState(1);
     }
   }
 

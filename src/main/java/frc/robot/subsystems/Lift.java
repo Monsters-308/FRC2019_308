@@ -39,8 +39,8 @@ public class Lift extends PIDSubsystem {
   public static boolean isMid;
   public static boolean isTop;
   public static boolean jogRunning;
-  public static int targetState;
-  public static int liftState;
+  public static double targetState;
+  public static double liftState;
 
   public Lift() {
     // Intert a subsystem name and PID values here
@@ -99,6 +99,7 @@ public class Lift extends PIDSubsystem {
     } else {
       isTop = false;
     }
+
   }
 
   public void setTargetState() {
@@ -122,10 +123,45 @@ public class Lift extends PIDSubsystem {
     }
   }
 
+  public void setIntermediateStates(){
+    if(liftState == 0 && targetState != 0){
+      liftState = 0.5;
+      if(middleLiftSwitch.get() == false && targetState != 1){
+        liftState = 1.5;
+      }
+    }else if(liftState == 2 && targetState != 2){
+      liftState = 1.5;
+      if(middleLiftSwitch.get() == false && targetState != 1){
+        liftState = 0.5;
+      }
+    }else if(liftState == 1 && targetState != 1){
+      if(targetState == 2){
+        liftState = 1.5;
+      }else if(targetState == 0){
+        liftState = 0.5;
+      }else if(targetState == 0 && isDown == true){
+        liftState = 0.0;
+      }
+    }else if(targetState == 1 && isMid == true){
+      liftState = 1.0;
+    }
+    System.out.println(liftState);
+  }
+
+  public void adjustChassisSpeed(){
+    if(liftState <= 0.5){
+      Chassis.driveCoef = 1.0;
+    }else if(liftState >= 1.0){
+      Chassis.driveCoef = 0.80;
+    }else if(liftState == 2.0){
+      Chassis.driveCoef = 0.60;
+    }
+  }
+
   public void basicLiftControl() {
-    if (OI.operator.getRawButton(4) == true) {
+    if (OI.operator.getRawButton(4) == true && isTop == false) {
       liftMotor1.set(1.0);
-    } else if (OI.operator.getRawButton(2) == true) {
+    } else if (OI.operator.getRawButton(2) == true && isDown == false) {
       liftMotor1.set(-1.0);
     } else {
       liftMotor1.set(0.0);
@@ -140,38 +176,10 @@ public class Lift extends PIDSubsystem {
     if (targetState > liftState) {
       liftMotor1.set(1.0);
     } else if (targetState < liftState) {
-      liftMotor1.set(-1.0);
+      liftMotor1.set(-0.7);
     } else if (targetState == liftState) {
       liftMotor1.set(0.0);
     }  
-  }
-
-  public static void runJog(long time, boolean dir) throws InterruptedException {
-		boolean jogRunning = true;
-		System.out.println(jogRunning);
-    stopwatch.start();
-    System.out.println("start");
-
-    if(dir){
-      liftMotor1.set(0.5);
-      System.out.println("jogging up");
-    }else{
-      liftMotor1.set(-0.5);
-      System.out.println("jogging down");
-    }
-		
-		if(stopwatch.getDurationMs() >= time) {
-      jogRunning = false;
-      liftMotor1.set(0.0);
-		}
-	}
-
-  public void jog() throws InterruptedException {
-    if(OI.driveController.getRawButton(3) == true){
-      runJog(5000, true);
-    }else if(OI.driveController.getRawButton(1) == true){
-      runJog(5000, false);
-    }
   }
 
   @Override

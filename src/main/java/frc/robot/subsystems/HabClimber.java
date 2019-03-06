@@ -45,8 +45,8 @@ public class HabClimber extends Subsystem {
   public void controlClimber(){
     if(OI.operator.getRawButton(10) == true){
       isArmed = true;
-      Chassis.driveCoef = 0.75;
-      Chassis.turnCoef = 0.75;
+      Chassis.driveCoef = 0.85;
+      Chassis.turnCoef = 0.65;
     }
 
     if(OI.driveController.getRawButton(2) == true && isArmed == true){

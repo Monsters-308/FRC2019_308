@@ -29,6 +29,8 @@ public class teleop_lift extends Command {
     Robot.lift.setTargetState();
     Robot.lift.advancedLiftControl();
     Robot.lift.correctLevel();
+    Robot.lift.setIntermediateStates();
+    Robot.lift.adjustChassisSpeed();
   }
 
   // Make this return true when this Command no longer needs to run execute()

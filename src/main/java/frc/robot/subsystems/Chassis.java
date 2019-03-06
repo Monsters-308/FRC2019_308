@@ -65,17 +65,14 @@ public class Chassis extends PIDSubsystem {
     leftBack.setNeutralMode(NeutralMode.Brake);
     rightBack.setNeutralMode(NeutralMode.Brake);
 
-    turnCoef = 0.9;
-    driveCoef = 0.85;
+    turnCoef = 0.76;
+    driveCoef = 1.0;
 
-  }
-  public void basicDrive(){
-    
   }
 
   public void advancedDrive(){
-    forward = driveCoef*OI.driveController.getRawAxis(2);
-    reverse = -driveCoef*OI.driveController.getRawAxis(3);
+    forward = Math.pow(driveCoef*OI.driveController.getRawAxis(2), 1.5);
+    reverse = -Math.pow(driveCoef*OI.driveController.getRawAxis(3), 1.5);
     turn = turnCoef*OI.driveController.getRawAxis(0);
 
     double x = 0;

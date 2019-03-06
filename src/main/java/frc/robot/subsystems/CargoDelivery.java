@@ -45,6 +45,7 @@ public class CargoDelivery extends Subsystem {
       deliveryArmSolenoid.set(false);
       isRaised = false;
       cargoIntakeMotor.set(1.0);
+      //Lights.setState(6);
     }else{
       deliveryArmSolenoid.set(true);
       if(OI.operator.getRawButton(8) == true){

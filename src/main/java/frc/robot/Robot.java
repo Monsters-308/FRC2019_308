@@ -26,7 +26,7 @@ import frc.robot.subsystems.*;
 public class Robot extends TimedRobot {
   public int testLoop = 0;
 
-  public static filler_auto auto = new filler_auto();
+  //public static filler_auto auto = new filler_auto();
   public static OI oi;
   public static Chassis chassis;
   public static HatchGripper gripper;
@@ -54,7 +54,7 @@ public class Robot extends TimedRobot {
     CameraServer.getInstance().startAutomaticCapture(0);
     CameraServer.getInstance().startAutomaticCapture(1);
 
-    m_chooser.addDefault("Default Auto", new filler_auto());
+    //m_chooser.addDefault("Default Auto", new filler_auto());
     // chooser.addObject("My Auto", new MyAutoCommand());
     //SmartDashboard.putData("Auto mode", m_chooser);
   }
@@ -119,6 +119,14 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
+
+    SmartDashboard.putBoolean("Down: ", Lift.isDown);
+    SmartDashboard.putBoolean("Middle: ", Lift.isMid);
+    SmartDashboard.putBoolean("Top: ", Lift.isTop);
+    SmartDashboard.putBoolean("Delivery: ", CargoDelivery.isRaised);
+    SmartDashboard.putBoolean("Hatch Status: ", HatchGripper.hasHatch);
+    SmartDashboard.putNumber("Target State", Lift.targetState);
+    SmartDashboard.putNumber("Lift State", Lift.liftState);
   }
 
   @Override
@@ -139,15 +147,17 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
 
-    if(testLoop++ > 10){
+    //if(testLoop++ > 10){
       SmartDashboard.putBoolean("Down: ", Lift.isDown);
       SmartDashboard.putBoolean("Middle: ", Lift.isMid);
       SmartDashboard.putBoolean("Top: ", Lift.isTop);
       SmartDashboard.putBoolean("Delivery: ", CargoDelivery.isRaised);
       SmartDashboard.putBoolean("Hatch Status: ", HatchGripper.hasHatch);
+      SmartDashboard.putNumber("Target State", Lift.targetState);
+      SmartDashboard.putNumber("Lift State", Lift.liftState);
       
-    testLoop = 0;
-    }
+   // testLoop = 0;
+   // }
   }
   
 
