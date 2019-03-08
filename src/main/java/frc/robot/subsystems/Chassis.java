@@ -66,7 +66,7 @@ public class Chassis extends PIDSubsystem {
     rightBack.setNeutralMode(NeutralMode.Brake);
 
     turnCoef = 0.76;
-    driveCoef = 1.0;
+    driveCoef = 0.87;
 
   }
 

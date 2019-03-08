@@ -118,7 +118,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-    Scheduler.getInstance().run();
+    teleopPeriodic();
 
     SmartDashboard.putBoolean("Down: ", Lift.isDown);
     SmartDashboard.putBoolean("Middle: ", Lift.isMid);

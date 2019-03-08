@@ -150,7 +150,7 @@ public class Lift extends PIDSubsystem {
 
   public void adjustChassisSpeed(){
     if(liftState <= 0.5){
-      Chassis.driveCoef = 1.0;
+      Chassis.driveCoef = 0.87;
     }else if(liftState >= 1.0){
       Chassis.driveCoef = 0.80;
     }else if(liftState == 2.0){
